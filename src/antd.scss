@@ -1,0 +1,26 @@
+$form-width: 100%;
+$form-max-width: 500px;
+$form-height: 40px;
+$form-radius: 8px;
+$form-font: 14px;
+
+.ant-form-item-control {
+  max-width: $form-max-width;
+}
+
+.ant-input,
+.ant-input-password,
+.ant-picker,
+.ant-select,
+.ant-input-number,
+.ant-input-affix-wrapper {
+  width: $form-width !important;
+  height: $form-height !important;
+  border-radius: $form-radius !important;
+  font-size: $form-font;
+}
+
+.ant-btn {
+  height: $form-height;
+  border-radius: $form-radius;
+}
