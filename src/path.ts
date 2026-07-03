@@ -1,0 +1,11 @@
+export const PATH = {
+  DASHBOARD: "DASHBOARD",
+  NOTE: "GHI CHÚ",
+  CUSTOMER: "NGƯỜI DÙNG",
+  PERMISSION: "VAI TRÒ",
+  CATEGORY: "DANH MỤC",
+  TRASH: "THÙNG RÁC",
+  ACCOUT: "TÀI KHOẢN",
+  CONTENT: "NỘI DUNG",
+  SYSTEM: "CÀI ĐẶT",
+};
