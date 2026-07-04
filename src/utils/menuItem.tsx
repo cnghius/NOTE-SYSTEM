@@ -13,7 +13,7 @@ import { MdContentPasteSearch } from "react-icons/md";
 
 import { IoPeopleSharp, IoServerOutline } from "react-icons/io5";
 
-type MenuItem = Required<MenuProps>["items"][number];
+export type MenuItem = Required<MenuProps>["items"][number];
 
 const getItem = (
   key: React.Key,

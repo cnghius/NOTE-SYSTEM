@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import dayjs from "dayjs";
-/* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect } from "react";
 import type { TypeAction } from "../types/typeAction";

@@ -1,11 +1,11 @@
 import { useState } from "react";
-import type { typeAction } from "../types/typeAction";
-export type Props<T> = (typeAction: typeAction, data?: T) => void;
+import type { TypeAction } from "../types/typeAction";
+export type Props<T> = (typeAction: TypeAction, data?: T) => void;
 const useTypeAction = <T>() => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [typeAction, setTypeAction] = useState<typeAction>("add");
+  const [typeAction, setTypeAction] = useState<TypeAction>("add");
   const [dataModal, setDataModal] = useState<T | undefined>();
-  const open: Props<T> = (typeAction: typeAction, data?: T) => {
+  const open: Props<T> = (typeAction: TypeAction, data?: T) => {
     setDataModal(data);
     setTypeAction(typeAction);
     setIsOpen(true);

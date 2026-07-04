@@ -14,7 +14,12 @@ export const MainLayout = () => {
       <SiderLayout collapsed={collapsed} />
       <Layout>
         <HeaderLayout collapsed={collapsed} setCollapsed={setCollapsed} />
-        <Content>
+        <Content
+          style={{
+            marginLeft: "10px",
+            marginTop: "4px",
+          }}
+        >
           <Outlet />
         </Content>
       </Layout>

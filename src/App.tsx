@@ -1,9 +1,10 @@
-import { MainLayout } from "./layouts/mainLayout";
+import { RouterProvider } from "react-router-dom";
+import { route } from "./routes/routeRender";
 
 export default function App() {
   return (
     <>
-      <MainLayout />
+      <RouterProvider router={route}></RouterProvider>
     </>
   );
 }
