@@ -1,5 +1,5 @@
-import CardLayout from "@/components/card/card";
-import { CollapseCustom } from "@/components/collapse/collapse";
+import CardLayout from "../../../components/card/card";
+import { CollapseCustom } from "../../../components/collapse/collapse";
 import type React from "react";
 
 interface Pops {

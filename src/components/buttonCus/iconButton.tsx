@@ -1,4 +1,4 @@
-import { usePermission } from "@/hooks/usePermission";
+import { usePermission } from "../../hooks/usePermission";
 import { FaEdit, FaRegEye } from "react-icons/fa";
 import { MdDeleteForever } from "react-icons/md";
 

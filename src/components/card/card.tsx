@@ -1,5 +1,5 @@
-import { cn } from "@/utils/merge";
 import type React from "react";
+import { cn } from "../../utils/merge";
 
 interface CardPops {
   className?: string;

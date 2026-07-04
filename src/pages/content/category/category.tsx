@@ -1,7 +1,8 @@
-import React from "react";
+import { LayoutContent } from "../../../components/tablePage/layout/layoutContent";
+import Table from "./components/table";
 
 const Category = () => {
-  return <div></div>;
+  return <LayoutContent table={<Table />} filter={undefined}></LayoutContent>;
 };
 
 export default Category;

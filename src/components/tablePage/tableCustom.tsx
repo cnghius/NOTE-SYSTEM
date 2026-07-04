@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button, message, Modal } from "antd";
 import { CollapseCustom } from "../collapse/collapse";
-import { useTypeAction } from "@/hooks/useTypeAction";
-import type { TypeAction } from "@/types/typeAction";
+import { useTypeAction } from "../../hooks/useTypeAction";
+import type { TypeAction } from "../../types/typeAction";
 import type { CustomCellRendererProps } from "ag-grid-react";
 import ButtonIconReact from "../buttonCus/iconButton";
 import TableCustomAg from "./layout/tableCustomAg";
@@ -12,7 +12,7 @@ import {
   useQueryClient,
   type QueryFunction,
 } from "@tanstack/react-query";
-import api from "@/config/axiosConfig";
+// import api from "@/config/axiosConfig";
 import CardLayout from "../card/card";
 // import { usePermission } from "@/hooks/usePermission";
 // import { useSelector } from "react-redux";
@@ -105,12 +105,12 @@ const TableCustom: React.FC<PopTable> = ({
       const isCurrentStatus = currrentStatus === "active";
 
       const actionLabel = isCurrentStatus ? "ngưng hoạt động" : "khôi phục";
-      const actionSatus = isCurrentStatus ? "inactive" : "acitve";
+      // const actionSatus = isCurrentStatus ? "inactive" : "acitve";
       Modal.confirm({
         title: `Bạn có chắc muốn ${actionLabel} mục này?`,
         onOk: async () => {
           try {
-            await api.patch(`/${resource}/${DocId}`, { status: actionSatus });
+            // await api.patch(`/${resource}/${DocId}`, { status: actionSatus });
             await params.onDelete?.(resource, DocId);
             // Làm mới cache
             queryClient.invalidateQueries({ queryKey: queryKey ?? [resource] });

@@ -6,16 +6,6 @@ import {
   BellOutlined,
 } from "@ant-design/icons";
 
-// const { Text } = Typography;
-//    const HederCustom: React.CSSProperties = {
-//        height: "72px",
-//   background: "white",
-//   display: "flex",
-//   justify-content: "space-between",
-//   align-items: "center",
-//   padding-inline: "30px",
-//   border-bottom: "1px solid #eee",
-//   }
 interface Pops {
   collapsed: boolean;
   setCollapsed: (collapsed: boolean) => void;
