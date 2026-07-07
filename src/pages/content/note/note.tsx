@@ -1,9 +1,10 @@
-import React from "react";
+import { LayoutContent } from "../../../components/tablePage/layout/layoutContent";
+import Table from "./components/table";
 
 const Note = () => {
   return (
     <div>
-      <div>áđá</div>
+      <LayoutContent filter={undefined} table={<Table />}></LayoutContent>
     </div>
   );
 };

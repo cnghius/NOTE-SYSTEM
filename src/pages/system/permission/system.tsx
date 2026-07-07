@@ -1,14 +1,14 @@
 import { LayoutContent } from "../../../components/tablePage/layout/layoutContent";
-import TableAccount from "./components/table";
+import SystemManagement from "./component/table";
 
-const Account = () => {
+const SystemPermissions = () => {
   return (
     <>
       <LayoutContent
-        table={<TableAccount />}
+        table={<SystemManagement />}
         filter={undefined}
       ></LayoutContent>
     </>
   );
 };
-export default Account;
+export default SystemPermissions;

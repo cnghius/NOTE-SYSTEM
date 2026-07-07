@@ -160,39 +160,6 @@ const TableCustom: React.FC<PopTable> = ({
       // },
     },
   ];
-  // console.log("popscolimsn", columnsCustom);
-  // console.log("columnsDef", columnsDef);
-  // console.log("pops.dataSourc", pops.dataSource);
-  // const [data, setData] = useState<any[]>() || undefined;
-  // useEffect(() => {
-  //   if (pops.dataSource)
-  //     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  //     setData(pops.dataSource as any);
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [pops.dataSource]);
-  // console.log("data", data);
-
-  //const columns = columnsCustom.filter((i) => i.headerName);
-  // const { loading, ...dataSource } = pops;
-  // const getRowData = () => {
-  //   if (!data?.data) {
-  //     return;
-  //   }
-  //   //gom tất cả vô 1 mảng duy nhất
-  //   if (data?.data?.[0]) {
-  //     return data.map((i: any) => i.data?.data?.[0]);
-  //   }
-  //   return data?.data || [];
-  // };
-  // const user = useSelector((state: RootState) => state.auth.user);
-  // const role = user?.role as UserRole | undefined;
-
-  // if (role === "admin") {
-  //   columnsDef;
-  // }
-  // if (role === "manager") {
-  //   columnsCustom;
-  // }
 
   const getCleanRowData = () => {
     if (!data) return [];
@@ -210,7 +177,9 @@ const TableCustom: React.FC<PopTable> = ({
   return (
     <>
       <div className="mb-2 mt-2 flex justify-end items-end mr-5">
-        <Button onClick={handleAdd}>Thêm mới</Button>
+        <Button className="bg-purple-300! text-white!" onClick={handleAdd}>
+          Thêm mới
+        </Button>
       </div>
       <CollapseCustom title={`THÔNG TIN CHI TIẾT ${title}`}>
         <TableCustomAg

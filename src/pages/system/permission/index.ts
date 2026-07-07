@@ -1,1 +1,1 @@
-export { default } from "./permission";
+export { default } from "./system";

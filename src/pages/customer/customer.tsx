@@ -1,7 +1,11 @@
+import { LayoutContent } from "../../components/tablePage/layout/layoutContent";
+import Filter from "./components/filter";
+import Table from "./components/table";
+
 const Customer = () => {
   return (
     <>
-      <div>hêlô</div>
+      <LayoutContent filter={<Filter />} table={<Table />}></LayoutContent>
     </>
   );
 };

@@ -1,37 +1,42 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import React from "react";
 import { Tag } from "antd";
 // import { SaveOutlined, IeOutlined } from "@ant-design/icons";
 import ModalMain from "./step/modalMain";
 import { getStatusActive } from "../../../../typeActive";
 import TableCustom from "../../../../components/tablePage/tableCustom";
-import { createAccount, getAccount } from "../../../../apis/accout.api";
+import {
+  createPermission,
+  getPermission,
+} from "../../../../apis/permission.api";
 
-const TableAccount = () => {
-  const queryKey = "account";
+const SystemManagement: React.FC = () => {
+  const queryKey = "roles";
   const StatusActive = getStatusActive();
-
   const userColumns = [
     {
-      headerName: "Tài khoản đăng nhập",
-      field: "email",
+      headerName: "Vai trò",
+      field: "roleName",
       flex: 1,
     },
     {
-      headerName: "Họ và tên nhân viên",
-      field: "fullName",
+      headerName: "Mã Vai trò",
+      field: "roleSlug",
       flex: 1,
     },
-    {
-      headerName: "Chức vụ hệ thống",
-      flex: 1,
-      valueGetter: (params: any) => {
-        return params.data?.roleSlugId?.roleName ?? "";
-      },
-    },
+    // {
+    //   headerName: "Họ và tên nhân viên",
+    //   field: "fullName",
+    // },
+    // {
+    //   headerName: "Chức vụ hệ thống",
+    //   valueGetter: (params: any) => {
+    //     return params.data?.roleSlugId?.roleName ?? "";
+    //   },
+    // },
 
     {
       headerName: "Trạng thái",
-      flex: 1,
       field: "status",
       cellRenderer: (params: any) => {
         const status = StatusActive(params?.value);
@@ -46,15 +51,15 @@ const TableAccount = () => {
 
   return (
     <TableCustom
-      title="account"
+      title="roles"
       ModalMain={ModalMain}
       queryKey={[queryKey]}
       openModal={open}
       columnsCustom={userColumns}
       resource={queryKey}
-      queryFn={() => getAccount(queryKey)}
+      queryFn={() => getPermission("roles")}
       onCreate={(resource: string, data: string) => {
-        return createAccount(resource, data);
+        return createPermission(resource, data);
       }}
       onUpdate={() => (resource: string, data: string, id: string) => {
         throw new Error(`dd ${resource}, ${data}, ${id}`);
@@ -63,4 +68,4 @@ const TableAccount = () => {
   );
 };
 
-export default TableAccount;
+export default SystemManagement;

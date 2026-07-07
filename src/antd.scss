@@ -7,8 +7,13 @@ $form-font: 14px;
 .ant-form-item-control {
   max-width: $form-max-width;
 }
-
-.ant-input,
+textarea.ant-input {
+  width: 100%;
+  border-radius: 8px;
+  font-size: 14px;
+  resize: both; // hoặc both
+}
+.ant-input:not(textarea),
 .ant-input-password,
 .ant-picker,
 .ant-select,

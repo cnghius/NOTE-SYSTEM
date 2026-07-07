@@ -6,24 +6,22 @@ import { MenuUnfoldOutlined, MenuFoldOutlined } from "@ant-design/icons";
 import { logOut } from "../redux/app/authSilce/authSlicent";
 import { persistsStore } from "../redux/store";
 import { useDispatch } from "react-redux";
-
+import { useNavigate } from "react-router-dom";
 interface Pops {
   collapsed: boolean;
   setCollapsed: (collapsed: boolean) => void;
 }
-
 const HeaderLayout: React.FC<Pops> = ({ collapsed, setCollapsed }) => {
   const handleCollapsed = () => {
     setCollapsed(!collapsed);
   };
-
   const user = useSelector((state: any) => state.auth.user);
-  // const username = user.username;
-  console.log("user", user);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const handleLogout = async () => {
     dispatch(logOut());
     await persistsStore.purge();
+    navigate("/login");
   };
   const items: any = [
     {
@@ -72,17 +70,9 @@ const HeaderLayout: React.FC<Pops> = ({ collapsed, setCollapsed }) => {
                 size={40}
                 className="bg-blue-500 uppercase cursor-pointer shrink-0"
               >
-                {/* {user.username?.charAt(0)} */}
+                {user.username?.charAt(0)}
               </Avatar>
             </Dropdown>
-
-            {/* <div>
-              <Text strong>Admin</Text>
-
-              <br />
-
-              <Text type="secondary">Super Admin</Text>
-            </div> */}
           </Space>
         </Space>
       </Header>

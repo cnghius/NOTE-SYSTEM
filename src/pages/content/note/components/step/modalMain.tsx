@@ -116,7 +116,6 @@ const ModalMain: React.FC<Props> = ({ typeAction, close }) => {
           </Form.Item>
         </div>
 
-        {/* Nội dung */}
         <Form.Item
           label="Nội dung"
           name="content"
@@ -127,11 +126,7 @@ const ModalMain: React.FC<Props> = ({ typeAction, close }) => {
             },
           ]}
         >
-          <TextArea
-            rows={8}
-            disabled={isView}
-            placeholder="Nhập nội dung ghi chú..."
-          />
+          <TextArea disabled={isView} placeholder="Nhập nội dung ghi chú..." />
         </Form.Item>
 
         {/* Ghim */}

@@ -14,7 +14,7 @@ export const LayoutContent: React.FC<Pops> = ({ table, filter }) => {
           {filter}
         </CollapseCustom>
       </CardLayout>
-      <div className="mt-3">{table}</div>
+      <div className="mt-2">{table}</div>
     </>
   );
 };
