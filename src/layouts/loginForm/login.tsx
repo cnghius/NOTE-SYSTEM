@@ -1,12 +1,29 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import { HiOutlineEye, HiOutlineClipboardDocumentList } from "react-icons/hi2";
 import { HiOutlineEyeOff, HiOutlineMail } from "react-icons/hi";
 import Register from "../register/register";
 import { Form } from "antd";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { LoginThunk } from "../../redux/app/authThunk/thunk";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const handleLogin = async () => {
+    const result = await dispatch(LoginThunk({ email, password }) as any);
+    if (LoginThunk.fulfilled.match(result)) {
+      const role = result.payload.role;
+      if (role === "admin") {
+        navigate("/DASHBOARD");
+      }
+    }
+  };
   return (
     <>
       {isLogin ? (
@@ -52,6 +69,7 @@ export default function Login() {
                     />
 
                     <input
+                      onChange={(e) => setEmail(e.target.value)}
                       type="email"
                       placeholder="Nhập email của bạn"
                       className="w-full h-14 rounded-xl border border-gray-200 bg-white pl-12 pr-4 outline-none focus:border-violet-500 focus:ring-4 focus:ring-violet-100 transition"
@@ -76,6 +94,7 @@ export default function Login() {
 
                   <div className="relative">
                     <input
+                      onChange={(e) => setPassword(e.target.value)}
                       type={showPassword ? "text" : "password"}
                       placeholder="Nhập mật khẩu của bạn"
                       className="w-full h-14 rounded-xl border border-gray-200 bg-white px-4 pr-12 outline-none focus:border-violet-500 focus:ring-4 focus:ring-violet-100 transition"
@@ -109,6 +128,7 @@ export default function Login() {
 
                 {/* Button */}
                 <button
+                  onClick={handleLogin}
                   className="
             w-full
             h-14

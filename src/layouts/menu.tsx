@@ -2,18 +2,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ROUTE_CONFIG } from "../routes/routeConfig";
 import { items } from "../utils/menuItem";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 import { Menu } from "antd";
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 const MenuLayout = () => {
   const navigate = useNavigate();
-  const user = useSelector((state: any) => state.auth.user);
+  // const user = useSelector((state: any) => state.auth.user);
   // const permision: string[] = user.role.permissions;
   const pathKey = ROUTE_CONFIG.filter((r: any) => {
-    if (user.role === "admin") {
-      return true;
-    }
+    // if (user.role === "admin") {
+    //   return true;
+    // }
     if (!r.role) {
       return false;
     }
