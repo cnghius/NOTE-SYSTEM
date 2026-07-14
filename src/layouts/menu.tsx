@@ -8,18 +8,20 @@ import { useNavigate } from "react-router-dom";
 const MenuLayout = () => {
   const navigate = useNavigate();
   const user = useSelector((state: any) => state.auth.user);
-  // const permision: string[] = user.role.permissions;
+  const permision: string[] = user?.roleSlugId?.permissions;
   const pathKey = ROUTE_CONFIG.filter((r: any) => {
-    if (user.role === "admin") {
+    if (user?.role === "admin" && user?.roleSlugId) {
       return true;
     }
-    if (!r.role) {
+    if (!r.roleSlugId) {
       return false;
     }
-    // const currentRole = Array.isArray(r.role) ? r.role : [r.role];
-    // return permision.some((p) =>
-    //   currentRole.some((c: any) => p.endsWith(`:${c}`)),
-    // );
+    const currentRole = Array.isArray(r.moduleKey)
+      ? r.moduleKey
+      : [r.moduleKey];
+    return permision.some((p) =>
+      currentRole.some((c: any) => p.endsWith(`:${c}`)),
+    );
   }).map((i) => i.path);
   const menuItem = useMemo(() => {
     console.log(

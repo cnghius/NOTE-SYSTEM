@@ -16,15 +16,15 @@ export const Protected: React.FC<ProductPops> = ({ moduleCode, children }) => {
   if (!user && !token) {
     return <Navigate to={"/login"} replace />;
   }
-  if (user.role === "admin") {
+  if (user.roleSlugId === "admin") {
     return <>{children}</>;
   }
-  // const permission: string[] = user.role.permision || [];
+  const permission: string[] = user.roleSlugId?.permisions || [];
   if (moduleCode) {
-    // const hasSucces = permission.some((p) => p.endsWith(`:${moduleCode}`));
-    // if (!hasSucces) {
-    //   return <Navigate to="/" replace />;
-    // }
+    const hasSucces = permission.some((p) => p.endsWith(`:${moduleCode}`));
+    if (!hasSucces) {
+      return <Navigate to="/" replace />;
+    }
     return <>{children}</>;
   }
 };
