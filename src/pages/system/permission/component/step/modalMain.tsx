@@ -9,8 +9,8 @@ interface ModalMainProps {
   typeAction: TypeAction;
   close?: () => void;
   dataModal?: any;
-  onCreate: (resource: string, data: any) => void;
-  onUpdate: (resource: string, data: any, id: string) => void;
+  onCreate?: (resource: string, data: string) => void;
+  onUpdate?: (resource: string, data: string, id: string) => void;
   resource: string;
 }
 const ModalMain: React.FC<ModalMainProps> = ({
