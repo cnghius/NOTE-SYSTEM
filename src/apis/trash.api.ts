@@ -1,27 +1,16 @@
 import api from "../configs/config";
 
-export const getTrash = (resource: string) => {
-  return api.get(`/${resource}`).then((res) => {
-    const data = res.data;
-    console.log("data get bôkign", res);
-    return data || [];
-  });
+// 1. Lấy danh sách rác
+export const getTrashList = (resource: string) => {
+  return api.get(`/${resource}`).then((res) => res.data);
 };
-export const createTrash = (resource: string, data: string) => {
-  return api.post(`/${resource}`, data).then((res) => {
-    const data = res.data;
-    return data;
-  });
+
+// 2. Khôi phục một mục từ Thùng rác (Sử dụng ID của bản ghi Trash)
+export const restoreTrashItem = (resource: string, id: string) => {
+  return api.patch(`/${resource}/restore/${id}`).then((res) => res.data);
 };
-export const updateTrash = (resource: string, data: string, id: string) => {
-  return api.put(`/${resource}/${id}`, data).then((res) => {
-    const data = res.data;
-    return data;
-  });
-};
-export const deleteTrash = (resource: string, id: string) => {
-  return api.delete(`/${resource}/${id}`).then((res) => {
-    const data = res.data;
-    return data;
-  });
+
+// 3. Xóa vĩnh viễn một mục khỏi Thùng rác
+export const deleteTrashForever = (resource: string, id: string) => {
+  return api.delete(`/${resource}/${id}`).then((res) => res.data);
 };

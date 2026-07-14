@@ -19,8 +19,6 @@ export default function Login() {
     const result = await dispatch(LoginThunk({ email, password }) as any);
     if (LoginThunk.fulfilled.match(result)) {
       const role = result.payload.user.role;
-      console.log("role", role);
-
       if (role === "admin") {
         navigate("/DASHBOARD");
       }

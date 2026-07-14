@@ -1,12 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button, Checkbox, DatePicker, Form, Input, Select, Tag } from "antd";
 import TextArea from "antd/es/input/TextArea";
+import type { TypeAction } from "../../../../../types/typeAction";
+// import { useEffect } from "react";
 
 interface Props {
   close?: () => void;
+  typeAction?: TypeAction;
+  dataModal?: any;
 }
 
-const ModalMain: React.FC<Props> = ({ close }) => {
+const ModalMain: React.FC<Props> = ({ close, typeAction }) => {
+  const isView = typeAction === "view";
+  // const isAdd = typeAction === "add";
+  const isRestore = typeAction === "restore";
   const [form] = Form.useForm();
 
   const handleRestore = () => {
@@ -14,11 +21,17 @@ const ModalMain: React.FC<Props> = ({ close }) => {
     console.log("Khôi phục", values);
   };
 
-  const handleDeleteForever = () => {
-    const values = form.getFieldsValue();
-    console.log("Xóa vĩnh viễn", values);
-  };
-
+  // const handleDeleteForever = () => {
+  //   const values = form.getFieldsValue();
+  //   console.log("Xóa vĩnh viễn", values);
+  // };
+  // useEffect(() => {
+  //   if (!isAdd && dataModal) {
+  //     form.setFieldsValue({
+  //       ...dataModal,
+  //     });
+  //   }
+  // }, [isView, dataModal]);
   return (
     <Form layout="vertical" form={form}>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -90,17 +103,19 @@ const ModalMain: React.FC<Props> = ({ close }) => {
       </Form.Item>
 
       {/* Footer */}
-      <div className="flex justify-end gap-2">
-        <Button onClick={close}>Đóng</Button>
+      {!isView && (
+        <div className="flex justify-end gap-2">
+          <Button onClick={close}>Đóng</Button>
 
-        <Button type="primary" onClick={handleRestore}>
-          Khôi phục
-        </Button>
+          <Button type="primary" onClick={handleRestore}>
+            {isRestore ? "Khôi Phục" : "Không khôi phục "}
+          </Button>
 
-        <Button danger onClick={handleDeleteForever}>
-          Xóa vĩnh viễn
-        </Button>
-      </div>
+          {/* <Button danger onClick={handleDeleteForever}>
+            Xóa vĩnh viễn
+          </Button> */}
+        </div>
+      )}
     </Form>
   );
 };

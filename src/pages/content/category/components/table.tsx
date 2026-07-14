@@ -3,7 +3,14 @@ import { Tag } from "antd";
 import { FolderOpenOutlined } from "@ant-design/icons";
 import ModalMain from "./step/modalMain";
 import TableCustom from "../../../../components/tablePage/tableCustom";
+import {
+  getCate,
+  createCate,
+  deleteCate,
+  updateCate,
+} from "../../../../apis/categories.api";
 const Table = () => {
+  const queryKey = "categories";
   const columnsCustom = [
     {
       headerName: "Danh mục",
@@ -93,15 +100,20 @@ const Table = () => {
   return (
     <>
       <TableCustom
+        title="DANH MỤC"
         columnsCustom={columnsCustom}
         ModalMain={ModalMain}
-        resource={""}
-        onCreate={function (resource: string, data: string): void {
-          throw new Error("Function not implemented.");
-        }}
-        onUpdate={function (resource: string, data: string, id: string): void {
-          throw new Error("Function not implemented.");
-        }}
+        queryKey={[queryKey]}
+        queryFn={() => getCate(queryKey)}
+        resource={queryKey}
+        onCreate={(resource: string, data: string) =>
+          createCate(resource, data)
+        }
+        onUpdate={(resource: string, data: string, id: string) =>
+          updateCate(resource, data, id)
+        }
+        onDelete={(resource: string, id: string) => deleteCate(resource, id)}
+        openModal={open}
       />
     </>
   );

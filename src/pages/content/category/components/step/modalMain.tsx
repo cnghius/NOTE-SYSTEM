@@ -1,14 +1,77 @@
-import { Button, Form, Input, Select } from "antd";
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Button, Form, Input, message, Select } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import type { TypeAction } from "../../../../../types/typeAction";
-interface Pops {
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { getParentCate } from "../../../../../apis/parentCate.api";
+import { useEffect } from "react";
+
+interface ModalProps {
   typeAction: TypeAction;
+  close?: () => void;
+  dataModal?: any;
+  onCreate: (resource: string, data: string) => void;
+  onUpdate: (resource: string, data: string, id: string) => void;
+  resource: string;
 }
-const ModalMain: React.FC<Pops> = ({ typeAction }) => {
+const ModalMain: React.FC<ModalProps> = ({
+  typeAction,
+  onCreate,
+  onUpdate,
+  close,
+  resource,
+  dataModal,
+}) => {
   const [form] = Form.useForm();
   const isView = typeAction === "view";
   const isAdd = typeAction === "add";
-  const handleSubmit = () => {};
+  const isEdit = typeAction === "edit";
+  const queryClient = useQueryClient();
+  const handleSubmit = async (value: any) => {
+    const valueClean = {
+      ...value,
+      parentId: value.parentId,
+    };
+
+    try {
+      if (onCreate && typeAction === "add") {
+        await onCreate?.(resource, valueClean);
+        message.success("thêm mới thành công ");
+        await queryClient.invalidateQueries({ queryKey: [resource] });
+      }
+
+      if (onUpdate && typeAction === "edit") {
+        await onUpdate?.(resource, valueClean, dataModal._id);
+        message.success("Chỉnh sửa thành công ");
+        await queryClient.invalidateQueries({ queryKey: [resource] });
+      }
+      form.resetFields();
+      await close?.();
+    } catch (error) {
+      console.log(error);
+      message.error("Không thể post lên được");
+    }
+  };
+
+  useEffect(() => {
+    if (dataModal && !isAdd) {
+      form.setFieldsValue({
+        ...dataModal,
+        parentId: dataModal.parentId?._id || dataModal.parentId || "",
+      });
+    }
+  }, [dataModal, isView, isEdit]);
+  const { data: parentCate } = useQuery({
+    queryKey: ["parent-categories"],
+    queryFn: () => getParentCate("parent-categories"),
+  });
+  const ParentCateList = parentCate?.data;
+  console.log("ParentCateList", ParentCateList);
+
+  const handleListParentCate = (parentId: string) => {
+    return ParentCateList?.find((p: any) => p._id == parentId || null);
+  };
   return (
     <>
       <Form layout="vertical" form={form} onFinish={handleSubmit}>
@@ -25,11 +88,6 @@ const ModalMain: React.FC<Pops> = ({ typeAction }) => {
             ]}
           >
             <Input placeholder="Ví dụ: Công việc" disabled={isView} />
-          </Form.Item>
-
-          {/* Slug */}
-          <Form.Item label="Slug" name="slug">
-            <Input placeholder="cong-viec" disabled={isView} />
           </Form.Item>
 
           {/* Màu */}
@@ -66,16 +124,13 @@ const ModalMain: React.FC<Pops> = ({ typeAction }) => {
               disabled={isView}
               allowClear
               placeholder="Không có"
-              options={[
-                {
-                  label: "Công việc",
-                  value: "1",
-                },
-                {
-                  label: "Học tập",
-                  value: "2",
-                },
-              ]}
+              onChange={handleListParentCate}
+              options={ParentCateList?.map((p: any) => {
+                return {
+                  label: p.nameParent,
+                  value: p._id,
+                };
+              })}
             />
           </Form.Item>
 

@@ -1,1 +1,1 @@
-export type TypeAction = "add" | "view" | "edit";
+export type TypeAction = "add" | "view" | "edit" | "restore";

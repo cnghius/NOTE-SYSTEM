@@ -4,7 +4,11 @@ import { Tag } from "antd";
 import ModalMain from "./step/modalMain";
 import { getStatusActive } from "../../../../typeActive";
 import TableCustom from "../../../../components/tablePage/tableCustom";
-import { createAccount, getAccount } from "../../../../apis/accout.api";
+import {
+  createAccount,
+  deleteAccount,
+  getAccount,
+} from "../../../../apis/accout.api";
 
 const TableAccount = () => {
   const queryKey = "account";
@@ -59,6 +63,7 @@ const TableAccount = () => {
       onUpdate={() => (resource: string, data: string, id: string) => {
         throw new Error(`dd ${resource}, ${data}, ${id}`);
       }}
+      onDelete={(resource: string, id: string) => deleteAccount(resource, id)}
     />
   );
 };

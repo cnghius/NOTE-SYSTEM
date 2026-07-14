@@ -14,6 +14,9 @@ import {
 } from "@tanstack/react-query";
 // import api from "@/config/axiosConfig";
 import CardLayout from "../card/card";
+import { useLocation } from "react-router-dom";
+import { PATH } from "../../path";
+// import api from "../../configs/config";
 // import { usePermission } from "@/hooks/usePermission";
 // import { useSelector } from "react-redux";
 // import type { RootState } from "@/redux/app/store";
@@ -24,8 +27,8 @@ interface ModalMainProps {
   dataModal?: any;
   close?: () => void;
   resource: string;
-  onCreate: (resource: string, data: string) => void;
-  onUpdate: (resource: string, data: string, id: string) => void;
+  onCreate?: (resource: string, data: string) => void;
+  onUpdate?: (resource: string, data: string, id: string) => void;
 }
 interface PopTable {
   ModalMain: React.FC<ModalMainProps>;
@@ -36,8 +39,8 @@ interface PopTable {
   queryFn?: QueryFunction<any>;
   onDelete?: (resource: string, id: string) => void;
   resource: string;
-  onCreate: (resource: string, data: string) => void;
-  onUpdate: (resource: string, data: string, id: string) => void;
+  onCreate?: (resource: string, data: string) => void;
+  onUpdate?: (resource: string, data: string, id: string) => void;
 }
 
 type OpenModal = (
@@ -54,7 +57,7 @@ interface IconButtonProps extends CustomCellRendererProps {
   hanleIsEdit: () => void;
   resource: string;
   onDelete?: (resource: string, id: string) => Promise<void>;
-  onCreate: (resource: string, data: string) => void;
+  onCreate?: (resource: string, data: string) => void;
 }
 
 const TableCustom: React.FC<PopTable> = ({
@@ -88,40 +91,77 @@ const TableCustom: React.FC<PopTable> = ({
     const handleEdit = async () => {
       open("edit", params.data);
     };
-    const handleDlete = async () => {
-      const DocId = params.data._id;
-      console.log("kiểm tra id của customer", DocId);
-
-      // const resources = params.resource || resource;
-      if (resource === undefined && DocId === null) {
-        message.warning(`Kiểm tra lại tên: ${resource} và id: ${DocId}`);
+    const handleDelete = async () => {
+      const docId = params.data?._id;
+      if (!docId) {
+        message.error("Không tìm thấy ID của danh mục cần xóa");
         return;
       }
-      if (params.onDelete === undefined || null) {
-        message.error("Chưa có tồn tại Id truyền ");
-      }
-      // Chuyển hành động "Xóa" thành toggle trạng thái isActive
-      const currrentStatus = params.data.status || "active";
-      const isCurrentStatus = currrentStatus === "active";
-
-      const actionLabel = isCurrentStatus ? "ngưng hoạt động" : "khôi phục";
-      // const actionSatus = isCurrentStatus ? "inactive" : "acitve";
       Modal.confirm({
-        title: `Bạn có chắc muốn ${actionLabel} mục này?`,
+        title: "Bạn có chắc chắn muốn xóa danh mục này?",
+        content:
+          "Danh mục này sẽ được chuyển vào thùng rác và có thể khôi phục lại sau.",
+        okText: "Xóa",
+        okType: "danger",
+        cancelText: "Hủy",
         onOk: async () => {
+          const previousData = queryClient.getQueryData([queryKey]);
+          queryClient.setQueryData([queryKey], (oldData: any[] | undefined) => {
+            if (!oldData) {
+              return "";
+            }
+            return oldData.filter((o) => o._id !== docId);
+          });
           try {
-            // await api.patch(`/${resource}/${DocId}`, { status: actionSatus });
-            await params.onDelete?.(resource, DocId);
-            // Làm mới cache
-            queryClient.invalidateQueries({ queryKey: queryKey ?? [resource] });
-            message.success(`${actionLabel} thành công`);
+            await onDelete?.(resource, docId);
+            // 2. Làm mới cache React Query để grid tự động ẩn dòng này đi
+            queryClient.invalidateQueries({
+              queryKey: [queryKey],
+              refetchType: "active",
+            });
+            message.success("Đã chuyển danh mục vào thùng rác thành công!");
           } catch (error) {
-            console.log("lỗi ", error);
-            message.error(`${actionLabel} thất bại`);
+            // Khôi phục cache nếu API lỗi
+            queryClient.setQueryData([queryKey], previousData);
+            console.error("Lỗi khi xóa mềm:", error);
+            message.error("Xóa danh mục thất bại, vui lòng thử lại.");
           }
         },
       });
     };
+    // const handleDlete = async () => {
+    //   const DocId = params.data._id;
+    //   // const resources = params.resource || resource;
+    //   if (resource === undefined && DocId === null) {
+    //     message.warning(`Kiểm tra lại tên: ${resource} và id: ${DocId}`);
+    //     return;
+    //   }
+    //   if (params.onDelete === undefined || null) {
+    //     message.error("Chưa có tồn tại Id truyền ");
+    //   }
+    //   const currrentStatus = params.data.status || "active";
+    //   const isCurrentStatus = currrentStatus === "active";
+
+    //   const actionLabel = isCurrentStatus ? "ngưng hoạt động" : "khôi phục";
+    //   // const actionSatus = isCurrentStatus ? "inactive" : "acitve";
+    //   Modal.confirm({
+    //     title: `Bạn có chắc muốn ${actionLabel} mục này?`,
+    //     onOk: async () => {
+    //       try {
+    //         // 1. Gọi hàm onDelete truyền từ Table xuống (sử dụng deleteCate đã khai báo ở Bước 1)
+    //         await onDelete?.(resource, docId);
+
+    //         // 2. Làm mới cache React Query để grid tự động ẩn dòng này đi
+    //         queryClient.invalidateQueries({ queryKey: [queryKey] });
+
+    //         message.success("Đã chuyển danh mục vào thùng rác thành công!");
+    //       } catch (error) {
+    //         console.error("Lỗi khi xóa mềm:", error);
+    //         message.error("Xóa danh mục thất bại, vui lòng thử lại.");
+    //       }
+    //     },
+    //   });
+    // };
     // const { readPermission, updatePermission, deletePermision } = usePermission(
     //   {},
     // );
@@ -135,7 +175,7 @@ const TableCustom: React.FC<PopTable> = ({
         <ButtonIconReact
           // {readPermission && (handleDlete = {handleDlete})}
           moduleKey={cleanResource}
-          handleIsDelete={handleDlete}
+          handleIsDelete={handleDelete}
           handleIsView={handleView}
           hanleIsEdit={handleEdit}
         />
@@ -149,15 +189,12 @@ const TableCustom: React.FC<PopTable> = ({
       cellClass: "ag-grid-cell-center",
       headerClass: "header-center-ag-grid",
       sortable: false,
-      width: 120,
+      width: 150,
       cellRenderer: ActionButton,
       cellRendererParams: {
         OpenModal: openModal,
         onDelete: onDelete,
       },
-      // render: () => {
-      //   return ActionButton;
-      // },
     },
   ];
 
@@ -174,12 +211,15 @@ const TableCustom: React.FC<PopTable> = ({
   const handleAdd = () => {
     open("add");
   };
+  const location = useLocation();
   return (
     <>
       <div className="mb-2 mt-2 flex justify-end items-end mr-5">
-        <Button className="bg-purple-300! text-white!" onClick={handleAdd}>
-          Thêm mới
-        </Button>
+        {!location.pathname.includes(PATH.TRASH) && (
+          <Button className="bg-purple-300! text-white!" onClick={handleAdd}>
+            Thêm mới
+          </Button>
+        )}
       </div>
       <CollapseCustom title={`THÔNG TIN CHI TIẾT ${title}`}>
         <TableCustomAg

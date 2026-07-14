@@ -13,3 +13,15 @@ export const createAccount = async (resource: string, data: string) => {
     return data;
   });
 };
+export const updateAccount = (resource: string, data: string, id: string) => {
+  return api.put(`/${resource}/${id}`, data).then((res) => {
+    const data = res.data;
+    return data;
+  });
+};
+export const deleteAccount = (resource: string, id: string) => {
+  return api.delete(`/${resource}/${id}`).then((res) => {
+    const data = res.data;
+    return data;
+  });
+};

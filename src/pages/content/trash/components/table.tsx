@@ -1,29 +1,40 @@
-import {
-  createTrash,
-  deleteTrash,
-  getTrash,
-  updateTrash,
-} from "../../../../apis/trash.api";
+/* eslint-disable @typescript-eslint/no-unused-expressions */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useQueryClient } from "@tanstack/react-query";
+import { getTrashList, deleteTrashForever } from "../../../../apis/trash.api";
 import TableCustom from "../../../../components/tablePage/tableCustom";
 import ModalMain from "./step/modalMain";
 
 const Table = () => {
-  const targetKey = "trashs";
+  const queryClient = useQueryClient();
+  const targetKey = "trash";
   const columnsCustom = [
     {
       headerName: "Tiêu đề",
-      field: "title",
+      field: "name",
+      valueGetter: (params: any) => {
+        if (params.data?.data?.name) {
+          return params.data?.data?.name ?? "";
+        }
+        return params.data?.data?.content ?? "";
+      },
       flex: 2,
     },
 
     {
       headerName: "Danh mục",
-      field: "category.name",
+      field: "itemType",
       flex: 1,
     },
 
     {
       headerName: "Ngày xóa",
+      valueFormatter: (params: any) => {
+        if (!params.value) {
+          return "";
+        }
+        return new Date(params.value).toLocaleDateString("vi-VN");
+      },
       field: "deletedAt",
       flex: 1.5,
     },
@@ -32,6 +43,15 @@ const Table = () => {
       headerName: "Ngày tạo",
       field: "createdAt",
       flex: 1.5,
+      valueGetter: (params: any) => {
+        return params.data?.data?.createdAt;
+      },
+      valueFormatter: (params: any) => {
+        if (!params.value) {
+          return "";
+        }
+        return new Date(params.value).toLocaleDateString("vi-VN");
+      },
     },
   ];
   return (
@@ -41,16 +61,13 @@ const Table = () => {
         ModalMain={ModalMain}
         columnsCustom={columnsCustom}
         queryKey={[targetKey]}
-        queryFn={() => getTrash(targetKey)}
+        queryFn={() => getTrashList(targetKey)}
         openModal={open}
         resource={targetKey}
-        onCreate={(resource: string, data: string) =>
-          createTrash(resource, data)
-        }
-        onUpdate={(resource: string, data: string, id: string) =>
-          updateTrash(resource, data, id)
-        }
-        onDelete={(resource, id) => deleteTrash(resource, id)}
+        onDelete={async (resource, id) => {
+          deleteTrashForever(resource, id);
+          await queryClient.invalidateQueries({ queryKey: [targetKey] });
+        }}
       />
     </>
   );
