@@ -13,14 +13,12 @@ const MenuLayout = () => {
     if (user?.role === "admin" && user?.roleSlugId) {
       return true;
     }
-    if (!r.roleSlugId) {
+    if (!r.role) {
       return false;
     }
-    const currentRole = Array.isArray(r.moduleKey)
-      ? r.moduleKey
-      : [r.moduleKey];
-    return permision.some((p) =>
-      currentRole.some((c: any) => p.endsWith(`:${c}`)),
+    const currentRole = Array.isArray(r.role) ? r.role : [r.role];
+    return permision?.some((p) =>
+      currentRole?.some((c: any) => p.endsWith(`:${c}`)),
     );
   }).map((i) => i.path);
   const menuItem = useMemo(() => {

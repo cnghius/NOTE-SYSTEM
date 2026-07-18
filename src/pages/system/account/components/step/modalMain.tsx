@@ -62,6 +62,23 @@ const ModalMain: React.FC<ModalMainProps> = ({
   // API trả về roleSlugId dưới dạng object.
   // Chuyển roleSlugId thành roleSlugId.roleName để Select hiển thị đúng tên chức vụ
   // và payload gửi lên backend đúng định dạng tên chức vụ.
+  const { data: permissionData } = useQuery({
+    queryKey: ["roles"],
+    queryFn: () => getPermission("roles"),
+  });
+  const permissionList = permissionData?.data;
+  console.log("permissionList", permissionList);
+
+  const getRoleValue = (roleSlugId: any) => {
+    if (!permissionList) {
+      return roleSlugId ?? "";
+    }
+    const matched = permissionList.find(
+      (p: any) => p._id === roleSlugId || p.roleName === roleSlugId,
+    );
+    return matched?._id ?? roleSlugId ?? "";
+  };
+
   useEffect(() => {
     if (dataModal && (isEdit || isView)) {
       form.setFieldsValue({
@@ -69,21 +86,19 @@ const ModalMain: React.FC<ModalMainProps> = ({
         username: dataModal.username ?? "",
         email: dataModal.email ?? "",
         password: dataModal.password ?? "",
-        roleSlugId:
-          dataModal.roleSlugId?.roleName ?? dataModal.roleSlugId ?? "",
+        roleSlugId: getRoleValue(
+          dataModal.roleSlugId?.roleName ?? dataModal.roleSlugId,
+        ),
       });
     } else {
       form.resetFields();
     }
-  }, [dataModal, form, isEdit, isView]);
-  const { data: permissionData } = useQuery({
-    queryKey: ["roles"],
-    queryFn: () => getPermission("roles"),
-  });
-  const permissionList = permissionData?.data;
+  }, [dataModal, form, getRoleValue, isEdit, isView]);
 
   const handleChangeRoleSlug = (roleSlugId: string) => {
-    const roles = permissionList.find((p: any) => p._id === roleSlugId || null);
+    const roles = permissionList?.find(
+      (p: any) => p._id === roleSlugId || p.roleName === roleSlugId,
+    );
     console.log("roles", roles);
   };
 
@@ -153,7 +168,7 @@ const ModalMain: React.FC<ModalMainProps> = ({
                 options={permissionList?.map((p: any) => {
                   return {
                     label: p.roleName,
-                    value: p.roleName,
+                    value: p._id,
                   };
                 })}
               />

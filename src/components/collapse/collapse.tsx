@@ -14,8 +14,7 @@ export const CollapseCustom: React.FC<PopsCollapse> = ({
 }) => {
   return (
     <Collapse
-      // Khung ngoài cùng luôn chiếm hết chiều rộng của container cha
-      className="w-full border-pink-600"
+      className="w-full! bg-blue-100!"
       defaultActiveKey={defaultOpen ? [1] : []} // Sửa lỗi [1] : [""] của Antd (key nên đồng nhất kiểu số)
       items={[
         {

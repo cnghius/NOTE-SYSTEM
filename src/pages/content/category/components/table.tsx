@@ -9,8 +9,10 @@ import {
   deleteCate,
   updateCate,
 } from "../../../../apis/categories.api";
+import { getStatusActive } from "../../../../typeActive";
 const Table = () => {
   const queryKey = "categories";
+  const StatusActive = getStatusActive();
   const columnsCustom = [
     {
       headerName: "Danh mục",
@@ -77,12 +79,11 @@ const Table = () => {
     {
       headerName: "Trạng thái",
       field: "status",
-      flex: 1,
-      minWidth: 120,
       cellRenderer: (params: any) => {
+        const status = StatusActive(params.value); // Nhận chuỗi "active" từ JSON
         return (
-          <Tag color={params.value === "active" ? "green" : "red"}>
-            {params.value === "active" ? "Hoạt động" : "Đã ẩn"}
+          <Tag color={status?.color} variant="solid">
+            {status?.text}
           </Tag>
         );
       },

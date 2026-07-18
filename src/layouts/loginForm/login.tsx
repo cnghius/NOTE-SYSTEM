@@ -3,11 +3,11 @@ import { useState } from "react";
 import { HiOutlineEye, HiOutlineClipboardDocumentList } from "react-icons/hi2";
 import { HiOutlineEyeOff, HiOutlineMail } from "react-icons/hi";
 import Register from "../register/register";
-import { Form } from "antd";
+import { Button, Form } from "antd";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { LoginThunk } from "../../redux/app/authThunk/thunk";
-
+import { Input, Checkbox } from "antd";
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
@@ -15,6 +15,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [form] = Form.useForm();
   const handleLogin = async () => {
     const result = await dispatch(LoginThunk({ email, password }) as any);
     if (LoginThunk.fulfilled.match(result)) {
@@ -22,6 +23,7 @@ export default function Login() {
       if (role === "admin") {
         navigate("/DASHBOARD");
       }
+      navigate("/DASHBOARD");
     }
   };
   return (
@@ -54,100 +56,97 @@ export default function Login() {
                   Đăng nhập để tiếp tục sử dụng ứng dụng ghi chú
                 </p>
               </div>
-
-              <Form className="mt-8 space-y-5">
+              <Form
+                form={form}
+                layout="vertical"
+                className="mt-8 space-y-2"
+                onFinish={handleLogin}
+              >
                 {/* Email */}
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Email
-                  </label>
-
-                  <div className="relative">
-                    <HiOutlineMail
-                      className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
-                      size={20}
-                    />
-
-                    <input
-                      onChange={(e) => setEmail(e.target.value)}
-                      type="email"
-                      placeholder="Nhập email của bạn"
-                      className="w-full h-14 rounded-xl border border-gray-200 bg-white pl-12 pr-4 outline-none focus:border-violet-500 focus:ring-4 focus:ring-violet-100 transition"
-                    />
-                  </div>
-                </div>
+                <Form.Item
+                  label="Email"
+                  name="email"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Vui lòng nhập email",
+                    },
+                    {
+                      type: "email",
+                      message: "Email không hợp lệ",
+                    },
+                  ]}
+                >
+                  <Input
+                    size="large"
+                    placeholder="Nhập email của bạn"
+                    prefix={<HiOutlineMail className="text-gray-400" />}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </Form.Item>
 
                 {/* Password */}
-                <div>
-                  <div className="flex justify-between mb-2">
-                    <label className="text-sm font-semibold text-gray-700">
-                      Mật khẩu
-                    </label>
+                <div className="flex justify-between items-center mb-2">
+                  <label className="font-semibold text-gray-700">
+                    Mật khẩu
+                  </label>
 
-                    <button
-                      type="button"
-                      className="text-sm text-violet-600 hover:text-violet-700"
-                    >
-                      Quên mật khẩu?
-                    </button>
-                  </div>
-
-                  <div className="relative">
-                    <input
-                      onChange={(e) => setPassword(e.target.value)}
-                      type={showPassword ? "text" : "password"}
-                      placeholder="Nhập mật khẩu của bạn"
-                      className="w-full h-14 rounded-xl border border-gray-200 bg-white px-4 pr-12 outline-none focus:border-violet-500 focus:ring-4 focus:ring-violet-100 transition"
-                    />
-
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"
-                    >
-                      {showPassword ? (
-                        <HiOutlineEyeOff size={20} />
-                      ) : (
-                        <HiOutlineEye size={20} />
-                      )}
-                    </button>
-                  </div>
+                  <Button type="link" className="!p-0">
+                    Quên mật khẩu?
+                  </Button>
                 </div>
+
+                <Form.Item
+                  name="password"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Vui lòng nhập mật khẩu",
+                    },
+                  ]}
+                >
+                  <Input.Password
+                    onChange={(e) => setPassword(e.target.value)}
+                    size="large"
+                    placeholder="Nhập mật khẩu của bạn"
+                    visibilityToggle={{
+                      visible: showPassword,
+                      onVisibleChange: setShowPassword,
+                    }}
+                    iconRender={(visible) =>
+                      visible ? <HiOutlineEyeOff /> : <HiOutlineEye />
+                    }
+                  />
+                </Form.Item>
 
                 {/* Remember */}
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    className="w-4 h-4 rounded border-gray-300 text-violet-600 focus:ring-violet-500"
-                  />
-
-                  <span className="ml-3 text-sm text-gray-600">
-                    Ghi nhớ đăng nhập
-                  </span>
-                </div>
+                <Form.Item name="remember" valuePropName="checked">
+                  <Checkbox>Ghi nhớ đăng nhập</Checkbox>
+                </Form.Item>
 
                 {/* Button */}
-                <button
-                  onClick={handleLogin}
-                  className="
-            w-full
-            h-14
-            rounded-xl
-            bg-gradient-to-r
-            from-violet-600
-            to-indigo-500
-            text-white
-            font-semibold
-            shadow-lg
-            hover:scale-[1.01]
-            active:scale-[0.99]
-            transition
-          "
-                >
-                  Đăng nhập
-                </button>
+                <Form.Item>
+                  <Button
+                    htmlType="submit"
+                    size="large"
+                    className="
+        w-full
+        h-14
+        rounded-xl
+        text-blue-500!
+        border-none!
+       bg-linear-to-r
+        from-violet-600
+        to-indigo-500
+        hover:scale-[1.01]
+        active:scale-[0.99]
+        transition
+      "
+                  >
+                    Đăng nhập
+                  </Button>
+                </Form.Item>
               </Form>
-
               <p className="text-center mt-8 text-sm text-gray-500">
                 Chưa có tài khoản?
                 <button

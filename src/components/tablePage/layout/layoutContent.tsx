@@ -4,7 +4,7 @@ import type React from "react";
 
 interface Pops {
   table: React.ReactNode;
-  filter: React.ReactNode;
+  filter?: React.ReactNode;
 }
 export const LayoutContent: React.FC<Pops> = ({ table, filter }) => {
   return (
@@ -14,7 +14,7 @@ export const LayoutContent: React.FC<Pops> = ({ table, filter }) => {
           {filter}
         </CollapseCustom>
       </CardLayout>
-      <div className="mt-2">{table}</div>
+      <div className="mt-1">{table}</div>
     </>
   );
 };

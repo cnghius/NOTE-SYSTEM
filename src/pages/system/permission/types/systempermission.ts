@@ -1,96 +1,129 @@
 import { PATH } from "../../../../path";
 
 export const SYSTEM_PERMISSIONS = {
-  // 1. Bảng điều khiển (DASHBOARD)
+  // Dashboard
   [PATH.DASHBOARD]: {
-    label: "Bảng điều khiển (Dashboard)",
+    label: "Dashboard",
     actions: [
       {
         value: `read:${PATH.DASHBOARD}`,
-        label: "Xem số liệu tổng quan Dashboard",
+        label: "Xem Dashboard",
       },
     ],
   },
 
-  // 2. Khách hàng (CUSTOMER)
+  // Customer
   [PATH.CUSTOMER]: {
-    label: "Quản lý Khách hàng",
+    label: "Customer",
     actions: [
-      { value: `read:${PATH.CUSTOMER}`, label: "Xem danh sách khách hàng" },
-      { value: `create:${PATH.CUSTOMER}`, label: "Thêm mới khách hàng" },
-      { value: `update:${PATH.CUSTOMER}`, label: "Sửa thông tin khách hàng" },
-      { value: `delete:${PATH.CUSTOMER}`, label: "Xóa hồ sơ khách hàng" },
+      {
+        value: `read:${PATH.CUSTOMER}`,
+        label: "Xem danh sách Customer",
+      },
+      {
+        value: `create:${PATH.CUSTOMER}`,
+        label: "Thêm Customer",
+      },
+      {
+        value: `update:${PATH.CUSTOMER}`,
+        label: "Cập nhật Customer",
+      },
+      {
+        value: `delete:${PATH.CUSTOMER}`,
+        label: "Xóa Customer",
+      },
     ],
   },
 
-  // 3. Kỹ thuật viên / Nhân sự (THERAPIST)
+  // Category
   [PATH.CATEGORY]: {
-    label: "Quản lý Kỹ thuật viên / Nhân sự",
+    label: "Category",
     actions: [
-      { value: `read:${PATH.CATEGORY}`, label: "Xem danh sách kỹ thuật viên" },
+      {
+        value: `read:${PATH.CATEGORY}`,
+        label: "Xem danh sách Category",
+      },
       {
         value: `create:${PATH.CATEGORY}`,
-        label: "Thêm mới nhân sự / kỹ thuật viên",
+        label: "Thêm Category",
       },
       {
         value: `update:${PATH.CATEGORY}`,
-        label: "Cập nhật thông tin / trạng thái làm việc",
+        label: "Cập nhật Category",
       },
-      { value: `delete:${PATH.CATEGORY}`, label: "Xóa tài khoản nhân sự" },
+      {
+        value: `delete:${PATH.CATEGORY}`,
+        label: "Xóa Category",
+      },
     ],
   },
 
-  // 4. Lịch hẹn Spa (BOOKING -> appointment)
+  // Note
   [PATH.NOTE]: {
-    label: "Quản lý Lịch hẹn (Appointment)",
+    label: "Note",
     actions: [
       {
         value: `read:${PATH.NOTE}`,
-        label: "Xem danh sách / Lịch trình hẹn",
+        label: "Xem danh sách Note",
       },
-      { value: `create:${PATH.NOTE}`, label: "Đặt lịch hẹn mới" },
+      {
+        value: `create:${PATH.NOTE}`,
+        label: "Thêm Note",
+      },
       {
         value: `update:${PATH.NOTE}`,
-        label: "Thay đổi thời gian / Xếp phòng / Đổi nhân sự",
+        label: "Cập nhật Note",
       },
-      { value: `delete:${PATH.NOTE}`, label: "Hủy lịch hẹn" },
+      {
+        value: `delete:${PATH.NOTE}`,
+        label: "Xóa Note",
+      },
     ],
   },
 
-  // 5. Dịch vụ Spa (SERVICE)
+  // Trash
   [PATH.TRASH]: {
-    label: "Quản lý Danh mục Dịch vụ",
+    label: "Trash",
     actions: [
-      { value: `read:${PATH.TRASH}`, label: "Xem danh sách dịch vụ" },
+      {
+        value: `read:${PATH.TRASH}`,
+        label: "Xem danh sách Trash",
+      },
       {
         value: `create:${PATH.TRASH}`,
-        label: "Thêm dịch vụ mới (Gội đầu, Massage...)",
+        label: "Thêm Trash",
       },
       {
         value: `update:${PATH.TRASH}`,
-        label: "Cập nhật bảng giá / Thời gian liệu trình",
+        label: "Cập nhật Trash",
       },
-      { value: `delete:${PATH.TRASH}`, label: "Xóa dịch vụ" },
+      {
+        value: `delete:${PATH.TRASH}`,
+        label: "Xóa Trash",
+      },
     ],
   },
 
-  // 6. Gói sản phẩm Spa (SPAPACKAGE -> product)
+  // Permission
   [PATH.PERMISSION]: {
-    label: "Quản lý Gói Sản phẩm / Combo (Product)",
+    label: "Permission",
     actions: [
       {
         value: `read:${PATH.PERMISSION}`,
-        label: "Xem danh sách gói sản phẩm / Combo",
+        label: "Xem danh sách Permission",
       },
       {
         value: `create:${PATH.PERMISSION}`,
-        label: "Tạo gói Combo dịch vụ mới",
+        label: "Thêm Permission",
       },
       {
         value: `update:${PATH.PERMISSION}`,
-        label: "Sửa giá / Nội dung gói sản phẩm",
+        label: "Cập nhật Permission",
       },
-      { value: `delete:${PATH.PERMISSION}`, label: "Xóa gói sản phẩm" },
+      {
+        value: `delete:${PATH.PERMISSION}`,
+        label: "Xóa Permission",
+      },
     ],
   },
 };

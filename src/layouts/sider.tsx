@@ -21,7 +21,6 @@ const SiderLayout = ({ collapsed }: Pops) => {
           collapsible
           collapsed={collapsed}
           trigger={null}
-          //   className="sidebar"
           style={siderStyle}
         >
           <div className="logo">
@@ -33,7 +32,7 @@ const SiderLayout = ({ collapsed }: Pops) => {
               N
             </Avatar>
 
-            {!collapsed && <span>NoteSystem</span>}
+            {!collapsed && <span className="text-blue-50">NoteSystem</span>}
           </div>
 
           <MenuLayout />

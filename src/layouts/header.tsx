@@ -68,7 +68,7 @@ const HeaderLayout: React.FC<Pops> = ({ collapsed, setCollapsed }) => {
             >
               <Avatar
                 size={40}
-                className="bg-blue-500 uppercase cursor-pointer shrink-0"
+                className="bg-blue-500! uppercase cursor-pointer shrink-0"
               >
                 {user.username?.charAt(0)}
               </Avatar>

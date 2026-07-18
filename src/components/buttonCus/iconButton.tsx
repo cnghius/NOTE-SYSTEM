@@ -29,7 +29,6 @@ const ButtonIconReact: React.FC<PropsButton> = ({
   //   updatePermission,
   //   deletePermision,
   // );
-
   return (
     <div className="flex gap-4 mt-2">
       {deletePermision && (
@@ -39,14 +38,14 @@ const ButtonIconReact: React.FC<PropsButton> = ({
           size={20}
         />
       )}
-      {readPermission && (
+      {readPermission && !location.pathname.includes(PATH.TRASH) && (
         <FaRegEye
           className="text-blue-500 hover:opacity-50 cursor-pointer"
           onClick={handleIsView}
           size={20}
         />
       )}
-      {updatePermission && (
+      {updatePermission && !location.pathname.includes(PATH.TRASH) && (
         <FaEdit
           className="text-green-500 hover:opacity-50 cursor-pointer"
           onClick={hanleIsEdit}

@@ -75,7 +75,6 @@ const TableCustom: React.FC<PopTable> = ({
   const { open, isOpen, close, typeAction, dataModal } = useTypeAction();
   const queryClient = useQueryClient();
   const { data } = useQuery({
-    //
     queryKey: queryKey ?? [resource],
     queryFn: queryFn,
   });
@@ -129,6 +128,11 @@ const TableCustom: React.FC<PopTable> = ({
         },
       });
     };
+    const handleRestore = () => {
+      console.log("áđá");
+
+      open("restore", params.data);
+    };
     // const handleDlete = async () => {
     //   const DocId = params.data._id;
     //   // const resources = params.resource || resource;
@@ -162,19 +166,29 @@ const TableCustom: React.FC<PopTable> = ({
     //     },
     //   });
     // };
-    // const { readPermission, updatePermission, deletePermision } = usePermission(
-    //   {},
-    // );
-    // const cleanResource = resource.replace(/s$/, "");
-    const cleanResource = resource.endsWith("s")
-      ? resource.slice(0, -1)
-      : resource;
+    const getModuleKeyFromResource = (resource: string) => {
+      const normalized = resource.toLowerCase();
+      const map: Record<string, string> = {
+        categories: "CATEGORY",
+        customers: "CUSTOMER",
+        notes: "NOTE",
+        permissions: "PERMISSION",
+        roles: "PERMISSION",
+        accounts: "ACCOUT",
+      };
+      return (
+        map[normalized] ??
+        (resource.endsWith("s") ? resource.slice(0, -1) : resource)
+      );
+    };
+
+    const moduleKey = getModuleKeyFromResource(resource);
 
     return (
       <>
         <ButtonIconReact
-          // {readPermission && (handleDlete = {handleDlete})}
-          moduleKey={cleanResource}
+          moduleKey={moduleKey}
+          handleDiscard={handleRestore}
           handleIsDelete={handleDelete}
           handleIsView={handleView}
           hanleIsEdit={handleEdit}
@@ -221,15 +235,16 @@ const TableCustom: React.FC<PopTable> = ({
           </Button>
         )}
       </div>
-      <CollapseCustom title={`THÔNG TIN CHI TIẾT ${title}`}>
-        <TableCustomAg
-          // rowData={pops.dataSource ? [...pops.dataSource] : data}
-          rowData={getCleanRowData()}
-          columnDefs={[...columnsCustom, ...columnsDef]}
-          className="w-full"
-        />
-      </CollapseCustom>
       <CardLayout>
+        <CollapseCustom title={`THÔNG TIN CHI TIẾT ${title}`}>
+          <TableCustomAg
+            // rowData={pops.dataSource ? [...pops.dataSource] : data}
+            rowData={getCleanRowData()}
+            columnDefs={[...columnsCustom, ...columnsDef]}
+            className="w-full"
+          />
+        </CollapseCustom>
+
         {ModalMain && (
           <Modal width={1200} open={isOpen} footer={null} onCancel={close}>
             <ModalMain

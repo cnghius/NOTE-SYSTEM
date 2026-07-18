@@ -1,4 +1,4 @@
-export const usePermission = (moduleKey: string) => {
+export const usePermission = (role: string) => {
   const checkUser = localStorage.getItem("user") as string;
   console.log("checkUser", checkUser);
 
@@ -12,7 +12,13 @@ export const usePermission = (moduleKey: string) => {
     };
   }
   const user = JSON.parse(checkUser);
-  if (user.roleSlugId === "admin") {
+  // Admin flag is stored in `user.role` or in roleSlugId metadata
+  if (
+    user.role === "admin" ||
+    user.roleSlugId === "admin" ||
+    user.roleSlugId?.roleSlug === "admin" ||
+    user.roleSlugId?.roleName === "admin"
+  ) {
     return {
       readPermission: true,
       createPermission: true,
@@ -21,14 +27,24 @@ export const usePermission = (moduleKey: string) => {
       isAdmin: true,
     };
   }
-  const permissions: string[] = user.roleSlugId?.permissions || [];
+
+  const permissions: string[] = Array.isArray(user.roleSlugId?.permissions)
+    ? user.roleSlugId.permissions
+    : [];
   console.log("permissions", permissions);
 
+  const normalizedRole = String(role || "").toUpperCase();
+  const normalizedPermissions = permissions.map((p) => String(p).toUpperCase());
+
   return {
-    readPermission: permissions.includes(`read:${moduleKey}`),
-    createPermission: permissions.includes(`create:${moduleKey}`),
-    updatePermission: permissions.includes(`update:${moduleKey}`),
-    deletePermision: permissions.includes(`delete:${moduleKey}`),
+    readPermission: normalizedPermissions.includes(`READ:${normalizedRole}`),
+    createPermission: normalizedPermissions.includes(
+      `CREATE:${normalizedRole}`,
+    ),
+    updatePermission: normalizedPermissions.includes(
+      `UPDATE:${normalizedRole}`,
+    ),
+    deletePermision: normalizedPermissions.includes(`DELETE:${normalizedRole}`),
     isAdmin: false,
   };
 };

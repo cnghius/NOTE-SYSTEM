@@ -9,9 +9,9 @@ import {
   TeamOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { MdContentPasteSearch } from "react-icons/md";
+// import { MdContentPasteSearch } from "react-icons/md";
 
-import { IoPeopleSharp, IoServerOutline } from "react-icons/io5";
+import { IoPeopleSharp } from "react-icons/io5";
 
 export type MenuItem = Required<MenuProps>["items"][number];
 
@@ -30,14 +30,12 @@ const getItem = (
 };
 export const items: MenuItem[] = [
   getItem(PATH.DASHBOARD, "dashboard", <UserOutlined />),
-  getItem(PATH.CONTENT, " Quản lý nội dung", <MdContentPasteSearch />, [
-    getItem(PATH.NOTE, "Ghi chú", <FileTextOutlined />),
-    getItem(PATH.CATEGORY, "Danh mục", <FolderOpenOutlined />),
-    getItem(PATH.TRASH, "Thùng rác", <DeleteOutlined />),
-  ]),
+  // getItem(PATH.CONTENT, " Quản lý nội dung", <MdContentPasteSearch />, []),
+  getItem(PATH.NOTE, "Ghi chú", <FileTextOutlined />),
+  getItem(PATH.CATEGORY, "Danh mục", <FolderOpenOutlined />),
+  getItem(PATH.TRASH, "Thùng rác", <DeleteOutlined />),
   getItem(PATH.CUSTOMER, "Người dùng", <TeamOutlined />),
-  getItem(PATH.SYSTEM, "Cài đặt", <IoServerOutline />, [
-    getItem(PATH.ACCOUT, "Tài khoản", <IoPeopleSharp />),
-    getItem(PATH.PERMISSION, "Vai trò", <SafetyCertificateOutlined />),
-  ]),
+  // getItem(PATH.SYSTEM, "Cài đặt", <IoServerOutline />, []),
+  getItem(PATH.ACCOUT, "Tài khoản", <IoPeopleSharp />),
+  getItem(PATH.PERMISSION, "Vai trò", <SafetyCertificateOutlined />),
 ];

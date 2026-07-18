@@ -11,6 +11,13 @@ import Login from "../loginForm/login";
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [register, setRegister] = useState(true);
+  // const [formData, setFormData] = useState({
+  //   username: "",
+  //   email: "",
+  //   phone: "",
+  //   password: "",
+  //   role: "customer", // mặc định
+  // });
   return (
     <>
       {register ? (
