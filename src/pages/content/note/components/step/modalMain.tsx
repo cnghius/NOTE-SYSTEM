@@ -2,20 +2,48 @@
 import { Button, Checkbox, DatePicker, Form, Input, Select } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import type { TypeAction } from "../../../../../types/typeAction";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface Props {
   typeAction: TypeAction;
   close?: () => void;
+  dataModal?: any;
+  onCreate?: (resource: string, data: string) => void;
+  onUpdate?: (resource: string, data: string, id: string) => void;
+  resource: string;
 }
 
-const ModalMain: React.FC<Props> = ({ typeAction, close }) => {
+const ModalMain: React.FC<Props> = ({
+  typeAction,
+  close,
+  onCreate,
+  onUpdate,
+  resource,
+  dataModal,
+}) => {
   const [form] = Form.useForm();
-
+  const isEdit = typeAction === "edit";
   const isView = typeAction === "view";
   const isAdd = typeAction === "add";
-
-  const handleSubmit = (values: any) => {
-    console.log(values);
+  const queryClient = useQueryClient();
+  const handleSubmit = async (values: any) => {
+    const valueClean = {
+      ...values,
+    };
+    try {
+      if (onCreate && isAdd) {
+        await onCreate?.(resource, valueClean);
+        queryClient.invalidateQueries({ queryKey: [resource] });
+      }
+      if (onUpdate && isEdit) {
+        await onUpdate?.(resource, valueClean, dataModal._id);
+        queryClient.invalidateQueries({ queryKey: [resource] });
+      }
+      await close?.();
+      form.resetFields();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

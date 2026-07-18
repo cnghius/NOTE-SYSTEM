@@ -1,7 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useQueryClient } from "@tanstack/react-query";
-import { getTrashList, deleteTrashForever } from "../../../../apis/trash.api";
+import {
+  getTrashList,
+  deleteTrashForever,
+  restoreTrashItem,
+} from "../../../../apis/trash.api";
 import TableCustom from "../../../../components/tablePage/tableCustom";
 import ModalMain from "./step/modalMain";
 
@@ -66,6 +70,10 @@ const Table = () => {
         resource={targetKey}
         onDelete={async (resource, id) => {
           deleteTrashForever(resource, id);
+          await queryClient.invalidateQueries({ queryKey: [targetKey] });
+        }}
+        onCreate={async (resource, id) => {
+          restoreTrashItem(resource, id);
           await queryClient.invalidateQueries({ queryKey: [targetKey] });
         }}
       />

@@ -1,30 +1,48 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, DatePicker, Form, Input } from "antd";
+import { Button, DatePicker, Form, Input, message } from "antd";
 import type { TypeAction } from "../../../../../types/typeAction";
 // import { useFormModal } from "../../../../../hooks/useFormModal";
 import { useEffect } from "react";
 import dayjs from "dayjs";
+import { useQueryClient } from "@tanstack/react-query";
 interface Props {
   close?: () => void;
   typeAction: TypeAction;
-  dataModal: any;
+  dataModal?: any;
+  onCreate?: (resource: string, id: string) => void;
+  resource: string;
 }
 
-const ModalMain: React.FC<Props> = ({ close, typeAction, dataModal }) => {
+const ModalMain: React.FC<Props> = ({
+  close,
+  typeAction,
+  dataModal,
+  onCreate,
+  resource,
+}) => {
   const isView = typeAction === "view";
   // const isAdd = typeAction === "add";
-  const isRestore = typeAction === "restore";
+  const isRestore = typeAction === "edit";
   const [form] = Form.useForm();
-
-  const handleRestore = () => {
-    const values = form.getFieldsValue();
-    console.log("Khôi phục", values);
+  const queryClient = useQueryClient();
+  const handleRestore = async () => {
+    try {
+      if (onCreate) {
+        await onCreate?.(resource, dataModal?._id);
+        await queryClient.invalidateQueries({ queryKey: [resource] });
+        message.success("Khôi phục thành công");
+      }
+      await close?.();
+      form.resetFields();
+    } catch (error) {
+      console.log(error);
+    }
   };
   useEffect(() => {
     if (dataModal) {
       form.setFieldsValue({
         ...dataModal,
-        createdAt: dayjs(dataModal?.data.createdAt).toISOString(),
+        createdAt: dayjs(dataModal?.data.createdAt),
         name: dataModal?.data.name,
       });
     }
